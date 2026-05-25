@@ -1,8 +1,11 @@
 # 🧠 VoxSense — High-Performance Speech Emotion Recognition Cloud Engine
 
+> [!TIP]
+> **🚀 Live Cloud Demo**: Try the fully functional, optimized cloud dashboard instantly! Open the public webpage directly in your browser: **[VoxSense Live Dashboard on Hugging Face Spaces](https://huggingface.co/spaces/Raul909/voxsense)** (100% Free, no setup or credit card required!).
+
 VoxSense is a flagship, enterprise-grade Speech Emotion Recognition (SER) cloud service. By leveraging **ONNX Runtime** for lightweight neural network execution and **PyTorch CUDA** for state-of-the-art transformer pipelines, VoxSense provides ultra-low latency, microsecond-scale static audio file classification and real-time streaming emotional tracking.
 
-This branch (`off-device-cloud-performance`) is dedicated strictly to the **Web/API Backend Server** and the **Glassmorphic Single-Page Browser Dashboard**, optimized for production container deployments (Docker, Google Cloud Run, Render).
+This branch (`off-device-cloud-performance`) is dedicated strictly to the **Web/API Backend Server** and the **Glassmorphic Single-Page Browser Dashboard**, optimized for production container deployments (Docker, Google Cloud Run, Render, Hugging Face).
 
 ---
 

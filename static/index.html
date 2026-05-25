@@ -147,8 +147,13 @@
                 <div class="glass-card card-result empty" id="result-card">
                     <!-- Idle State View -->
                     <div class="result-idle" id="result-idle-view">
-                        <div class="idle-image-wrapper">
-                            <img src="https://raw.githubusercontent.com/Raul909/speech-emotion-recognition/off-device-cloud-performance/static/voxsense_vocal_visualization.png" alt="Vocal Visualization" class="idle-image">
+                        <div class="radar-container" id="awaiting-radar">
+                            <div class="radar-circle radar-c1"></div>
+                            <div class="radar-circle radar-c2"></div>
+                            <div class="radar-circle radar-c3"></div>
+                            <div class="radar-sphere">
+                                <i class="fa-solid fa-microphone-lines radar-inner-icon"></i>
+                            </div>
                         </div>
                         <h2>Awaiting Audio Analysis</h2>
                         <p>Upload a file or record audio on the left side to extract emotional analytics</p>
@@ -156,9 +161,14 @@
 
                     <!-- Loading State View -->
                     <div class="result-loading hidden" id="result-loading-view">
-                        <div class="spinner-container">
-                            <div class="spinner"></div>
-                            <div class="spinner-glow"></div>
+                        <div class="countdown-loader-container">
+                            <div class="countdown-svg-wrapper">
+                                <svg class="countdown-svg" viewBox="0 0 100 100">
+                                    <circle class="countdown-bg" cx="50" cy="50" r="42"></circle>
+                                    <circle class="countdown-bar" cx="50" cy="50" r="42" id="countdown-bar-fill"></circle>
+                                </svg>
+                                <div class="countdown-text" id="countdown-percentage">0%</div>
+                            </div>
                         </div>
                         <h2>Extracting Features...</h2>
                         <p id="loading-status-text">Running inference on selected neural architecture</p>

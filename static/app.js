@@ -440,6 +440,36 @@ async function startAnalysis() {
     showResultView('loading');
     document.getElementById('loading-status-text').textContent = 'Running inference on selected neural architecture';
     
+    // Set up SVG Countdown circular progress animation parameters
+    const bar = document.getElementById('countdown-bar-fill');
+    const text = document.getElementById('countdown-percentage');
+    
+    if (bar && text) {
+        bar.style.strokeDashoffset = '264';
+        text.textContent = '0%';
+    }
+    
+    let progress = 0;
+    
+    // Ticker function to smoothly increment percentage up to 98%
+    const progressInterval = setInterval(() => {
+        if (progress < 98) {
+            progress += (98 - progress) * 0.15; // Smooth exponential deceleration
+            if (progress > 97) progress = 97.5;
+            
+            updateLoaderUI(progress);
+        }
+    }, 80);
+    
+    function updateLoaderUI(p) {
+        const pRound = Math.round(p);
+        if (text) text.textContent = `${pRound}%`;
+        if (bar) {
+            const offset = 264 - (264 * p / 100);
+            bar.style.strokeDashoffset = offset;
+        }
+    }
+    
     const formData = new FormData();
     formData.append('file', currentAudioFile);
     formData.append('model', selectedModel);
@@ -456,11 +486,29 @@ async function startAnalysis() {
             throw new Error(result.error || 'Server error occurred');
         }
         
-        displayResults(result);
-        saveToHistory(result, currentAudioFile.name);
-        showToast('Analysis completed successfully!', 'success');
+        // Success: Clear ticker, snap to 100% smoothly
+        clearInterval(progressInterval);
+        
+        // Fast transition to 100% over 150ms
+        let finalP = progress;
+        const snapInterval = setInterval(() => {
+            if (finalP < 100) {
+                finalP += 4;
+                if (finalP >= 100) {
+                    finalP = 100;
+                    clearInterval(snapInterval);
+                    setTimeout(() => {
+                        displayResults(result);
+                        saveToHistory(result, currentAudioFile.name);
+                        showToast('Analysis completed successfully!', 'success');
+                    }, 200);
+                }
+                updateLoaderUI(finalP);
+            }
+        }, 15);
         
     } catch (err) {
+        clearInterval(progressInterval);
         console.error('Prediction error:', err);
         showToast(err.message || 'Analysis failed. Check backend console.', 'error');
         showResultView('idle');

@@ -581,45 +581,121 @@ audio::-webkit-media-controls-time-remaining-display {
     animation: fadeIn var(--transition-normal);
 }
 
-.idle-image-wrapper {
-    max-width: 260px;
-    margin: 0 auto 1.75rem;
+/* Acoustic Sonar Radar (Idle state) */
+.radar-container {
+    width: 220px;
+    height: 220px;
+    margin: 0 auto 2rem;
     position: relative;
-    border-radius: 16px;
-    padding: 6px;
-    background: linear-gradient(135deg, rgba(229, 193, 88, 0.25), rgba(0, 242, 254, 0.1));
-    border: 1px solid rgba(229, 193, 88, 0.2);
-    box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.6), 0 0 25px rgba(229, 193, 88, 0.15);
-    animation: floatIllustration 6s ease-in-out infinite;
-    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.idle-image-wrapper::before {
-    content: '';
+.radar-circle {
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(229, 193, 88, 0.15) 0%, transparent 60%);
-    animation: pulseGlow 4s ease-in-out infinite alternate;
-    pointer-events: none;
-}
-
-.idle-image {
     width: 100%;
-    height: auto;
-    border-radius: 10px;
-    display: block;
-    mix-blend-mode: normal;
-    transition: transform var(--transition-normal);
+    height: 100%;
+    border-radius: 50%;
+    border: 1px solid rgba(229, 193, 88, 0.4);
+    background: radial-gradient(circle, rgba(229, 193, 88, 0.03) 0%, transparent 70%);
+    box-shadow: 0 0 15px rgba(229, 193, 88, 0.05), inset 0 0 10px rgba(229, 193, 88, 0.02);
+    transform: scale(0.3);
+    opacity: 0;
 }
 
-.idle-image-wrapper:hover .idle-image {
-    transform: scale(1.03);
+.radar-c1 {
+    animation: radarPulse 4s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+}
+
+.radar-c2 {
+    animation: radarPulse 4s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+    animation-delay: 1.33s;
+}
+
+.radar-c3 {
+    animation: radarPulse 4s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+    animation-delay: 2.66s;
+}
+
+.radar-sphere {
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(10, 15, 29, 0.95) 0%, rgba(6, 9, 19, 0.98) 100%);
+    border: 2px solid var(--accent-gold);
+    box-shadow: 0 0 35px rgba(229, 193, 88, 0.35), inset 0 0 15px rgba(229, 193, 88, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    animation: spherePulse 3s ease-in-out infinite alternate;
+    transition: transform var(--transition-normal);
+    cursor: pointer;
+}
+
+.radar-sphere:hover {
+    transform: scale(1.06);
+    box-shadow: 0 0 45px rgba(229, 193, 88, 0.5), inset 0 0 20px rgba(229, 193, 88, 0.3);
+}
+
+.radar-inner-icon {
+    font-size: 2.25rem;
+    color: var(--accent-gold);
+    text-shadow: 0 0 10px rgba(229, 193, 88, 0.5);
+    animation: iconPulse 3s ease-in-out infinite;
+}
+
+/* Circular Countdown Loader (Loading state) */
+.countdown-loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 2rem;
+    width: 180px;
+    height: 180px;
+}
+
+.countdown-svg-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.countdown-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.countdown-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.03);
+    stroke-width: 5;
+}
+
+.countdown-bar {
+    fill: none;
+    stroke: var(--accent-gold);
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-dasharray: 264; /* 2 * pi * r (2 * 3.14159 * 42 = 263.89) */
+    stroke-dashoffset: 264; /* Starts empty */
+    transition: stroke-dashoffset 0.1s linear, stroke var(--transition-fast);
+    filter: drop-shadow(0 0 8px rgba(229, 193, 88, 0.6));
+}
+
+.countdown-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.2), 0 0 10px rgba(229, 193, 88, 0.4);
+    animation: textPulse 1s infinite alternate;
 }
 
 .result-idle h2 {
@@ -1006,6 +1082,53 @@ audio::-webkit-media-controls-time-remaining-display {
 @keyframes floatIllustration {
     0%, 100% { transform: translateY(0) rotate(0deg); box-shadow: 0 15px 35px -10px rgba(0,0,0,0.6), 0 0 25px rgba(229, 193, 88, 0.15); }
     50% { transform: translateY(-8px) rotate(0.5deg); box-shadow: 0 25px 45px -10px rgba(0,0,0,0.7), 0 0 35px rgba(229, 193, 88, 0.3); }
+}
+
+@keyframes radarPulse {
+    0% {
+        transform: scale(0.35);
+        opacity: 0;
+    }
+    15% {
+        opacity: 0.65;
+    }
+    100% {
+        transform: scale(1.1);
+        opacity: 0;
+    }
+}
+
+@keyframes spherePulse {
+    0% {
+        box-shadow: 0 0 35px rgba(229, 193, 88, 0.35), inset 0 0 15px rgba(229, 193, 88, 0.2);
+        transform: scale(1);
+    }
+    100% {
+        box-shadow: 0 0 50px rgba(229, 193, 88, 0.55), inset 0 0 25px rgba(229, 193, 88, 0.35);
+        transform: scale(1.03);
+    }
+}
+
+@keyframes iconPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.85;
+    }
+    50% {
+        transform: scale(1.12);
+        opacity: 1;
+    }
+}
+
+@keyframes textPulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.2), 0 0 10px rgba(229, 193, 88, 0.4);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 15px rgba(229, 193, 88, 0.6);
+    }
 }
 
 @keyframes slideDown {

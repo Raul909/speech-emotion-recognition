@@ -182,6 +182,43 @@ def load_model_on_demand(model_name):
                 
     return False
 
+def ensure_models_exist():
+    os.makedirs(os.path.join(BASE_DIR, "models"), exist_ok=True)
+    
+    files = {
+        "label_encoder.pkl": f"https://raw.githubusercontent.com/{username}/{repo}/main/models/label_encoder.pkl",
+        "speech_emotion_recognition_cnn_model.onnx": f"https://raw.githubusercontent.com/{username}/{repo}/main/models/speech_emotion_recognition_cnn_model.onnx",
+        "speech_emotion_recognition_lstm_model.onnx": f"https://raw.githubusercontent.com/{username}/{repo}/main/models/speech_emotion_recognition_lstm_model.onnx",
+        "speech_emotion_recognition_crnn_model.onnx": f"https://raw.githubusercontent.com/{username}/{repo}/main/models/speech_emotion_recognition_crnn_model.onnx",
+        "speech_emotion_recognition_model.pkl": f"https://raw.githubusercontent.com/{username}/{repo}/main/models/speech_emotion_recognition_model.pkl"
+    }
+    
+    for filename, url in files.items():
+        dest_path = os.path.join(BASE_DIR, "models", filename)
+        if not os.path.exists(dest_path):
+            try:
+                print(f"Downloading required file {filename} from {url}...")
+                import requests
+                res = requests.get(url)
+                if res.status_code == 200:
+                    with open(dest_path, "wb") as f:
+                        f.write(res.content)
+                    print(f"Downloaded {filename} successfully.")
+                else:
+                    backup_url = url.replace("/main/", "/off-device-cloud-performance/")
+                    print(f"Attempting backup download from {backup_url}...")
+                    res = requests.get(backup_url)
+                    if res.status_code == 200:
+                        with open(dest_path, "wb") as f:
+                            f.write(res.content)
+                        print(f"Downloaded {filename} from backup successfully.")
+                    else:
+                        print(f"Failed to download {filename}. HTTP Status: {res.status_code}")
+            except Exception as e:
+                print(f"Error downloading {filename}: {e}")
+
+ensure_models_exist()
+
 # Load Label Encoder
 label_encoder_path = os.path.join(BASE_DIR, "models", "label_encoder.pkl")
 if os.path.exists(label_encoder_path):

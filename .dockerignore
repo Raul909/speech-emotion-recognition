@@ -1,0 +1,43 @@
+# Exclude Git files
+.git
+.github
+.gitignore
+
+# Exclude local virtual environments
+.venv
+venv
+env
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Exclude IDE configurations
+.idea
+.vscode
+.claude
+.kiro
+.opencode.json
+.cursorrules
+.windsurfrules
+
+# Exclude large binary packages and local data logs
+voxsense-v1.0.1.apk
+*.apk
+*.zip
+*.tar.gz
+speech emotion recognizer/
+speech emotion recognizer.whtt
+static.whtt
+legacy/
+notebooks/
+
+# Exclude local build directory and dependencies
+node_modules
+dist
+build
+
+# Keep models directory empty so Docker images remain super lightweight
+# Weights are hydrated dynamically at runtime
+models/*
+!models/.gitkeep

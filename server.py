@@ -523,8 +523,15 @@ def predict_stream():
             })
             
     except Exception as e:
-        print(f"Error in predict_stream: {e}")
-        return jsonify({"success": False, "error": str(e)}), 500
+        error_msg = str(e)
+        if "soundfile" in error_msg.lower() or "malformed" in error_msg.lower() or "empty" in error_msg.lower():
+            print(f"Warning in predict_stream: Malformed/empty audio chunk received (expected during browser streaming initialization).")
+            return jsonify({"success": False, "error": "Audio chunk too short or empty. Waiting for buffer..."}), 200
+        else:
+            print(f"Error in predict_stream: {e}")
+            import traceback
+            traceback.print_exc()
+            return jsonify({"success": False, "error": error_msg}), 500
     finally:
         try:
             if os.path.exists(temp_input_path):

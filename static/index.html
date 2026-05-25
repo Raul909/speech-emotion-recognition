@@ -161,14 +161,14 @@
 
                     <!-- Loading State View -->
                     <div class="result-loading hidden" id="result-loading-view">
-                        <div class="countdown-loader-container">
-                            <div class="countdown-svg-wrapper">
-                                <svg class="countdown-svg" viewBox="0 0 100 100">
-                                    <circle class="countdown-bg" cx="50" cy="50" r="42"></circle>
-                                    <circle class="countdown-bar" cx="50" cy="50" r="42" id="countdown-bar-fill"></circle>
-                                </svg>
-                                <div class="countdown-text" id="countdown-percentage">0%</div>
-                            </div>
+                        <div class="ascii-loader-container">
+                            <pre class="ascii-loader-pre" id="ascii-percentage-art">
+ ▄██▄  ██████ █▀  ▄█
+▐█▀  █ █▀  ▀█    ▄█ 
+██    █  ▄█     ▄█  
+▐█▄  █ ▄█      ▄█   
+ ▀██▀  ██████ █▀  ▀█
+                            </pre>
                         </div>
                         <h2>Extracting Features...</h2>
                         <p id="loading-status-text">Running inference on selected neural architecture</p>

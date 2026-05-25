@@ -9,6 +9,110 @@ let recordingTimer = null;
 let recordingStartTime = 0;
 let historyData = [];
 
+// Aino Agency-inspired dynamic ASCII art digit matrix (5x5 character blocks)
+const asciiDigits = {
+    '0': [
+        " ▄██▄ ",
+        "▐█▀  █",
+        "██    █",
+        "▐█▄  █",
+        " ▀██▀ "
+    ],
+    '1': [
+        " ▄██ ",
+        "  ██ ",
+        "  ██ ",
+        "  ██ ",
+        "▄████▄"
+    ],
+    '2': [
+        "▄████▄",
+        "    ██",
+        "▄████▀",
+        "██    ",
+        "██████"
+    ],
+    '3': [
+        "▄████▄",
+        "    ██",
+        " ▄███▀",
+        "    ██",
+        "▄████▀"
+    ],
+    '4': [
+        "██  ██",
+        "██  ██",
+        "██████",
+        "    ██",
+        "    ██"
+    ],
+    '5': [
+        "██████",
+        "██    ",
+        "█████▄",
+        "    ██",
+        "█████▀"
+    ],
+    '6': [
+        " ▄███▄",
+        "██    ",
+        "█████▄",
+        "██  ██",
+        "▀████▀"
+    ],
+    '7': [
+        "██████",
+        "    ██",
+        "   ██ ",
+        "  ██  ",
+        " ██   "
+    ],
+    '8': [
+        " ▄███▄ ",
+        "██   ██",
+        " ▀███▀ ",
+        "██   ██",
+        " ▀███▀ "
+    ],
+    '9': [
+        " ▄████▄",
+        "██   ██",
+        " ▀█████",
+        "     ██",
+        " ▀████▀"
+    ],
+    '%': [
+        "█▀  ▄█",
+        "   ▄█ ",
+        "  ▄█  ",
+        " ▄█   ",
+        "█▀  ▀█"
+    ],
+    ' ': [
+        "      ",
+        "      ",
+        "      ",
+        "      ",
+        "      "
+    ]
+};
+
+// Merges multiple 5x5 ASCII digit grids line-by-line to render a single multi-character art string
+function generateAsciiPercent(percentage) {
+    const percentStr = Math.round(percentage).toString() + '%';
+    let outputLines = ["", "", "", "", ""];
+    
+    for (let char of percentStr) {
+        const glyph = asciiDigits[char] || asciiDigits[' '];
+        for (let row = 0; row < 5; row++) {
+            // Add spacing between characters
+            outputLines[row] += glyph[row] + "  ";
+        }
+    }
+    
+    return outputLines.join("\n");
+}
+
 // Emotion styling & meta map
 const emotionMap = {
     neutral: { emoji: '😐', colorClass: 'result-neutral', colorHex: '#8e9bb0' },
@@ -440,13 +544,10 @@ async function startAnalysis() {
     showResultView('loading');
     document.getElementById('loading-status-text').textContent = 'Running inference on selected neural architecture';
     
-    // Set up SVG Countdown circular progress animation parameters
-    const bar = document.getElementById('countdown-bar-fill');
-    const text = document.getElementById('countdown-percentage');
-    
-    if (bar && text) {
-        bar.style.strokeDashoffset = '264';
-        text.textContent = '0%';
+    // Set up dynamic ASCII percentage block progress parameters
+    const asciiArtEl = document.getElementById('ascii-percentage-art');
+    if (asciiArtEl) {
+        asciiArtEl.textContent = generateAsciiPercent(0);
     }
     
     let progress = 0;
@@ -462,11 +563,8 @@ async function startAnalysis() {
     }, 80);
     
     function updateLoaderUI(p) {
-        const pRound = Math.round(p);
-        if (text) text.textContent = `${pRound}%`;
-        if (bar) {
-            const offset = 264 - (264 * p / 100);
-            bar.style.strokeDashoffset = offset;
+        if (asciiArtEl) {
+            asciiArtEl.textContent = generateAsciiPercent(p);
         }
     }
     
